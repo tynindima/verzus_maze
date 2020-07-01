@@ -61,6 +61,8 @@ const Maze: FC<Props> = (props) => {
 };
 
 const mapStateToProps = (state: State) => ({
+  start: state.start,
+  finish: state.finish,
   isFinish: state.isFinish,
 });
 
