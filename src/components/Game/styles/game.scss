@@ -1,0 +1,41 @@
+.game {
+  margin-top: 100px;
+
+  &__container {
+    display: grid;
+    grid-template-columns: 1fr 350px 1fr;
+    align-items: center;
+    justify-items: center;
+  }
+
+  &__button {
+    justify-self: end;
+    height: 50px;
+    width: 100px;
+    border-radius: 5px;
+    border-width: 1px;
+    margin-right: 30px;
+    background-color: seagreen;
+    color: white;
+    cursor: pointer;
+
+    &--passive {
+      background-color: gainsboro;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .game {
+    &__container {
+      grid-template-columns: 1fr;
+    }
+
+    &__button {
+      justify-self: center;
+      margin-right: 0;
+      margin-bottom: 30px;
+    }
+
+  }
+}

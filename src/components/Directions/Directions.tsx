@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './styles/directions.scss';
 
 interface Props {
   fieldOfArrows: Arrow[];

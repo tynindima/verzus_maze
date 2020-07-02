@@ -1,11 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import './styles/game.scss';
+import cx from 'classnames';
 
 import { Directions } from '../Directions';
 import Maze from '../Maze/Maze';
 import { State } from '../../store/store';
-import { toggleStart, toggleFinish, getStart, getFinish } from '../../store/actionCreators';
+import {
+  toggleStart,
+  toggleFinish,
+  getStart,
+  getFinish,
+  getFieldOfArrows,
+  toggleClick
+} from '../../store/actionCreators';
 
 export const getRandomNumber = (min: number, max: number): number => {
   const number = min + Math.random() * (max - min);
@@ -14,24 +23,28 @@ export const getRandomNumber = (min: number, max: number): number => {
 };
 
 interface Props {
-  isStart: boolean;
+  isClick: boolean;
   selectStart: (isStart: boolean) => void;
   selectFinish: (isFinish: boolean) => void;
-  start: Array<number>;
+  selectClick: (isClick: boolean) => void;
   onStart: (start: Array<number>) => void;
   onFinish: (finish: Array<number>) => void;
+  onFieldOfArrows: (arrpws: Arrow[]) => void;
+  fieldOfArrows: Arrow[];
+  start: Array<number>;
 }
 
 const Game: FC<Props> = (props) => {
   const {
-    isStart,
+    isClick,
     selectStart,
     selectFinish,
-    start,
+    selectClick,
     onFinish,
+    onFieldOfArrows,
+    fieldOfArrows,
+    start,
   } = props;
-
-  console.log(isStart);
 
   const currentPosition = [...start];
 
@@ -41,8 +54,6 @@ const Game: FC<Props> = (props) => {
     3: "left",
     4: "right"
   };
-
-  const [fieldOfArrows, setFieldOfArrows] = useState<Arrow[] | any>([]);
 
   const handleStart = () => {
     const directionsArray = [];
@@ -96,22 +107,27 @@ const Game: FC<Props> = (props) => {
 
     }
 
-    setFieldOfArrows(directionsArray);
+    onFieldOfArrows(directionsArray);
     onFinish(currentPosition);
     selectStart(true);
     selectFinish(false);
+    selectClick(true);
   };
 
   return (
     <div className="game">
-      <button
-        type="button"
-        onClick={handleStart}
-      >
-        Start
-      </button>
+      <div className="game__container">
+        <button
+          className={cx("game__button", {"game__button--passive": isClick})}
+          type="button"
+          onClick={handleStart}
+          disabled={isClick}
+        >
+          Start
+        </button>
 
-      <Maze />
+        <Maze />
+      </div>
       <Directions fieldOfArrows={fieldOfArrows} />
     </div>
   );
@@ -119,7 +135,8 @@ const Game: FC<Props> = (props) => {
 
 const mapStateToProps = (state: State) => ({
   start: state.start,
-  isStart: state.isStart,
+  fieldOfArrows: state.fieldOfArrows,
+  isClick: state.isClick,
 });
 
 const mapDispatchToProps = {
@@ -127,6 +144,8 @@ const mapDispatchToProps = {
   selectFinish: toggleFinish,
   onStart: getStart,
   onFinish: getFinish,
+  onFieldOfArrows: getFieldOfArrows,
+  selectClick: toggleClick,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

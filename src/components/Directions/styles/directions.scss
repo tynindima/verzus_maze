@@ -1,0 +1,33 @@
+.directions {
+  width: max-content;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  grid-gap: 5px;
+
+  &__step {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: gray;
+    background-image: url('../img/arrow.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: translate(center, center);
+
+    &--left {
+      transform: rotate(180deg);
+
+    }
+
+    &--up {
+      transform: rotate(-90deg);
+    }
+
+    &--down {
+      transform: rotate(90deg);
+    }
+  }
+
+}
